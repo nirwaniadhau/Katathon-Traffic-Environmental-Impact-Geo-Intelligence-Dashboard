@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 20% 6%;
+    --foreground: 150 30% 85%;
+
+    --card: 220 25% 8% / 0.5;
+    --card-foreground: 150 30% 92%;
+
+    --popover: 220 30% 10%;
+    --popover-foreground: 150 30% 92%;
+
+    --primary: 150 75% 55%;
+    --primary-foreground: 220 30% 8%;
+
+    --secondary: 220 25% 12%;
+    --secondary-foreground: 150 30% 92%;
+
+    --muted: 220 20% 15%;
+    --muted-foreground: 150 15% 60%;
+
+    --accent: 150 70% 45% / 0.15;
+    --accent-foreground: 150 75% 65%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 150 75% 55%;
+    --success-foreground: 220 30% 8%;
+
+    --warning: 45 93% 47%;
+    --warning-foreground: 220 30% 8%;
+
+    --border: 150 30% 20% / 0.3;
+    --input: 150 30% 20% / 0.3;
+    --ring: 150 75% 55%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(150 75% 45% / 0.2), hsl(150 75% 65% / 0.3));
+    --gradient-eco: linear-gradient(135deg, hsl(150 75% 55% / 0.25), hsl(150 85% 65% / 0.35));
+    --gradient-alert: linear-gradient(135deg, hsl(0 72% 51% / 0.25), hsl(15 72% 51% / 0.35));
+    --gradient-glass: linear-gradient(135deg, hsl(150 50% 50% / 0.05), hsl(150 60% 60% / 0.1));
+
+    --glow-primary: 0 0 20px hsl(150 75% 55% / 0.4);
+    --glow-strong: 0 0 40px hsl(150 75% 55% / 0.6);
+
+    --sidebar-background: 220 30% 5%;
+    --sidebar-foreground: 150 30% 85%;
+    --sidebar-primary: 150 75% 55%;
+    --sidebar-primary-foreground: 220 30% 8%;
+    --sidebar-accent: 220 25% 10% / 0.5;
+    --sidebar-accent-foreground: 150 30% 85%;
+    --sidebar-border: 150 30% 20% / 0.3;
+    --sidebar-ring: 150 75% 55%;
+  }
+
+  .dark {
+    --background: 220 20% 6%;
+    --foreground: 150 30% 85%;
+
+    --card: 220 25% 8% / 0.5;
+    --card-foreground: 150 30% 92%;
+
+    --popover: 220 30% 10%;
+    --popover-foreground: 150 30% 92%;
+
+    --primary: 150 75% 55%;
+    --primary-foreground: 220 30% 8%;
+
+    --secondary: 220 25% 12%;
+    --secondary-foreground: 150 30% 92%;
+
+    --muted: 220 20% 15%;
+    --muted-foreground: 150 15% 60%;
+
+    --accent: 150 70% 45% / 0.15;
+    --accent-foreground: 150 75% 65%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 150 75% 55%;
+    --success-foreground: 220 30% 8%;
+
+    --warning: 45 93% 52%;
+    --warning-foreground: 220 30% 8%;
+
+    --border: 150 30% 20% / 0.3;
+    --input: 150 30% 20% / 0.3;
+    --ring: 150 75% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(150 75% 45% / 0.2), hsl(150 75% 65% / 0.3));
+    --gradient-eco: linear-gradient(135deg, hsl(150 75% 55% / 0.25), hsl(150 85% 65% / 0.35));
+    --gradient-alert: linear-gradient(135deg, hsl(0 62% 45% / 0.25), hsl(15 62% 50% / 0.35));
+    --gradient-glass: linear-gradient(135deg, hsl(150 50% 50% / 0.05), hsl(150 60% 60% / 0.1));
+
+    --glow-primary: 0 0 20px hsl(150 75% 55% / 0.4);
+    --glow-strong: 0 0 40px hsl(150 75% 55% / 0.6);
+
+    --sidebar-background: 220 30% 5%;
+    --sidebar-foreground: 150 30% 85%;
+    --sidebar-primary: 150 75% 55%;
+    --sidebar-primary-foreground: 220 30% 8%;
+    --sidebar-accent: 220 25% 10% / 0.5;
+    --sidebar-accent-foreground: 150 30% 85%;
+    --sidebar-border: 150 30% 20% / 0.3;
+    --sidebar-ring: 150 75% 55%;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-xl bg-card/50 border-border/50;
+  }
+  
+  .glass-strong {
+    @apply backdrop-blur-2xl bg-card/70 border-border/70;
+  }
+  
+  .glow {
+    box-shadow: var(--glow-primary);
+  }
+  
+  .glow-strong {
+    box-shadow: var(--glow-strong);
+  }
+  
+  .grid-pattern {
+    background-image: 
+      linear-gradient(hsl(150 30% 20% / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(150 30% 20% / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* 3D Theme */
+  .theme-3d body {
+    perspective: 1200px;
+  }
+
+  .theme-3d [data-3d] .glass,
+  .theme-3d [data-3d] .border-2,
+  .theme-3d [data-3d] .card {
+    transform-style: preserve-3d;
+    transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+    box-shadow:
+      0 10px 20px hsl(0 0% 0% / 0.25),
+      inset 0 1px 0 hsl(0 0% 100% / 0.04);
+    border-color: hsl(var(--border)) !important;
+    background-image: var(--gradient-glass);
+  }
+
+  .theme-3d [data-3d] .glass:hover,
+  .theme-3d [data-3d] .border-2:hover,
+  .theme-3d [data-3d] .card:hover {
+    transform: translateZ(8px) rotateX(2deg) rotateY(-2deg);
+    box-shadow:
+      0 20px 35px hsl(150 75% 55% / 0.25),
+      0 10px 18px hsl(0 0% 0% / 0.35);
+    filter: saturate(1.05);
+  }
+
+  .theme-3d [data-3d] .glass:active,
+  .theme-3d [data-3d] .border-2:active,
+  .theme-3d [data-3d] .card:active {
+    transform: translateZ(2px);
+  }
+
+  .theme-3d [data-3d] .btn,
+  .theme-3d [data-3d] .button,
+  .theme-3d [data-3d] button {
+    transform-style: preserve-3d;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    box-shadow:
+      0 8px 14px hsl(0 0% 0% / 0.25),
+      inset 0 1px 0 hsl(0 0% 100% / 0.06);
+  }
+
+  .theme-3d [data-3d] .btn:hover,
+  .theme-3d [data-3d] .button:hover,
+  .theme-3d [data-3d] button:hover {
+    transform: translateZ(6px);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
