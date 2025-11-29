@@ -1,7 +1,5 @@
-
-
 import { useState, useEffect } from "react";
-import { FileDown } from "lucide-react";
+import { FileDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -25,6 +23,7 @@ const EcoReport = () => {
   const [duration, setDuration] = useState("7days");
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const cityNames: any = {
     hyderabad: "Hyderabad",
@@ -62,76 +61,131 @@ const EcoReport = () => {
     fetchData();
   }, [city, duration]);
 
-  if (loading) return <div className="p-8 text-center">Loading…</div>;
-  if (!data) return null;
+  // --------------------------------------------------------
+  // PDF Download with loading state
+  // --------------------------------------------------------
+  const exportPDF = async () => {
+    try {
+      setExporting(true);
+      window.open(
+        `http://localhost:5000/api/download-report?city=${city}&range=${duration}`
+      );
+      // Simulate a delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    } catch (error) {
+      console.error("Error exporting PDF:", error);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto"></div>
+          <p className="text-foreground/80 font-medium">Loading Environmental Report...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 bg-destructive/20 rounded-full flex items-center justify-center mx-auto">
+            <FileDown className="h-8 w-8 text-destructive" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground">No Data Available</h2>
+          <p className="text-foreground/80 font-medium">Unable to load environmental report data.</p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="bg-primary hover:bg-primary/90"
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const { airQuality, environment, traffic, insights, timeWindow } = data;
 
-  // --------------------------------------------------------
-  // NEW PDF Download (Puppeteer via Flask)
-  // --------------------------------------------------------
-  const exportPDF = () => {
-    window.open(
-      `http://localhost:5000/api/download-report?city=${city}&range=${duration}`
-    );
-  };
-
-  // --------------------------------------------------------
-  // UI
-  // --------------------------------------------------------
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold">Environmental Impact Report</h1>
-            <p className="text-muted-foreground">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/90 bg-clip-text text-transparent">
+              Environmental Impact Report
+            </h1>
+            <p className="text-foreground/80 font-medium">
               {cityNames[city]} — {durationLabels[duration]}
             </p>
           </div>
 
-          <Button className="bg-primary" onClick={exportPDF}>
-            <FileDown className="mr-2 h-4 w-4" />
-            Export PDF
+          <Button 
+            className="bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-105 border-2 border-primary/20"
+            onClick={exportPDF}
+            disabled={exporting}
+          >
+            {exporting ? (
+              <>
+                <div className="w-4 h-4 border-2 border-background border-t-transparent rounded-full animate-spin mr-2" />
+                Exporting...
+              </>
+            ) : (
+              <>
+                <Download className="mr-2 h-4 w-4" />
+                Export PDF
+              </>
+            )}
           </Button>
         </div>
 
         {/* Filters */}
-        <div className="flex gap-4 mb-6">
-          <Select value={city} onValueChange={setCity}>
-            <SelectTrigger className="w-40 bg-card border-border">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="hyderabad">Hyderabad</SelectItem>
-              <SelectItem value="bangalore">Bangalore</SelectItem>
-              <SelectItem value="mumbai">Mumbai</SelectItem>
-              <SelectItem value="delhi">Delhi</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex flex-wrap gap-4 mb-8 p-6 rounded-lg bg-background/80 backdrop-blur-sm border-2 border-foreground/10 transition-all duration-300">
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-foreground block">Select City</label>
+            <Select value={city} onValueChange={setCity}>
+              <SelectTrigger className="w-48 bg-background/90 border-foreground/20 text-foreground transition-colors duration-200 hover:border-foreground/30">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-foreground/20 text-foreground">
+                <SelectItem value="hyderabad" className="focus:bg-primary/10">Hyderabad</SelectItem>
+                <SelectItem value="bangalore" className="focus:bg-primary/10">Bangalore</SelectItem>
+                <SelectItem value="mumbai" className="focus:bg-primary/10">Mumbai</SelectItem>
+                <SelectItem value="delhi" className="focus:bg-primary/10">Delhi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select value={duration} onValueChange={setDuration}>
-            <SelectTrigger className="w-40 bg-card border-border">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7days">Last 7 days</SelectItem>
-              <SelectItem value="15days">Last 15 days</SelectItem>
-              <SelectItem value="30days">Last 30 days</SelectItem>
-              <SelectItem value="3months">Last 3 months</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-foreground block">Time Range</label>
+            <Select value={duration} onValueChange={setDuration}>
+              <SelectTrigger className="w-48 bg-background/90 border-foreground/20 text-foreground transition-colors duration-200 hover:border-foreground/30">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-foreground/20 text-foreground">
+                <SelectItem value="7days" className="focus:bg-primary/10">Last 7 days</SelectItem>
+                <SelectItem value="15days" className="focus:bg-primary/10">Last 15 days</SelectItem>
+                <SelectItem value="30days" className="focus:bg-primary/10">Last 30 days</SelectItem>
+                <SelectItem value="3months" className="focus:bg-primary/10">Last 3 months</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Report Content */}
-        <div id="report-content">
+        <div id="report-content" className="space-y-8">
           <SummaryMetrics overview={environment.overview} />
           <AirQualitySnapshot pollutants={airQuality.pollutants} />
           <TopPollutedCorridors corridors={traffic.corridors} />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <EnvironmentalImpact breakdown={environment.emissionBreakdown} />
             <AQITrendChart trend={airQuality.trend} />
           </div>

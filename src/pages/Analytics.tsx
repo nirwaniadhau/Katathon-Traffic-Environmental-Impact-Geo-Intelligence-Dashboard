@@ -258,97 +258,80 @@ export default function Analytics() {
   }, [hourlyAqi, correlation, co2Emissions]);
 
   return (
-    <div className="space-y-6 animate-in fade-in-50 duration-500">
+    <div className="relative space-y-6 animate-in fade-in-50 duration-500">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Analytics & Insights</h1>
-          <p className="text-muted-foreground mt-1">Historical data and correlation analysis</p>
-        </div>
-        <div className="flex gap-3">
-          <Select defaultValue="week">
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Time Period" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="day">Today</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select defaultValue="delhi">
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="City" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="delhi">Delhi</SelectItem>
-              <SelectItem value="mumbai">Mumbai</SelectItem>
-              <SelectItem value="bangalore">Bangalore</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/90 bg-clip-text text-transparent">
+            Analytics & Insights
+          </h1>
+          <p className="text-foreground/80 font-medium">Historical data and correlation analysis</p>
         </div>
       </div>
 
       {selectedLocation && (
-        <Alert className="border-primary/50 bg-primary/5">
+        <Alert className="border-primary/50 bg-primary/10 backdrop-blur-sm">
           <MapPin className="h-4 w-4 text-primary" />
-          <AlertDescription>
+          <AlertDescription className="text-foreground font-medium">
             <strong>📍 Location:</strong> {selectedLocation.name || `${selectedLocation.latitude.toFixed(4)}, ${selectedLocation.longitude.toFixed(4)}`}
           </AlertDescription>
         </Alert>
       )}
 
+      {/* Metric Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-2">
+        <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:border-foreground/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Current AQI</CardTitle>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <TrendingUp className="h-4 w-4 text-destructive" />}
+            <CardTitle className="text-sm font-bold text-foreground">Current AQI</CardTitle>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin text-foreground/70" /> : <TrendingUp className="h-4 w-4 text-rose-600" />}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-foreground">
               {loading ? "—" : currentAQI ?? "—"}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/70 font-medium">
               {selectedLocation ? "Real-time data" : "Select location on map"}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-2">
+        <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:border-foreground/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Traffic Speed</CardTitle>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Activity className="h-4 w-4 text-warning" />}
+            <CardTitle className="text-sm font-bold text-foreground">Traffic Speed</CardTitle>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin text-foreground/70" /> : <Activity className="h-4 w-4 text-amber-600" />}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-foreground">
               {loading ? "—" : trafficSpeed ? `${Math.round(trafficSpeed)} km/h` : "—"}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/70 font-medium">
               {selectedLocation ? "Current speed" : "Select location on map"}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-2">
+        <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:border-foreground/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">CO₂ Emissions</CardTitle>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <TrendingDown className="h-4 w-4 text-success" />}
+            <CardTitle className="text-sm font-bold text-foreground">CO₂ Emissions</CardTitle>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin text-foreground/70" /> : <TrendingDown className="h-4 w-4 text-emerald-600" />}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-foreground">
               {loading ? "—" : co2Emissions !== null ? `${co2Emissions.toFixed(2)} kg/h` : "—"}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/70 font-medium">
               {selectedLocation ? "Based on current traffic" : "Select location on map"}
             </p>
           </CardContent>
         </Card>
       </div>
 
+      {/* Charts Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border-2">
+        <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-xl">
           <CardHeader>
-            <CardTitle>AQI vs Traffic Speed Correlation</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-foreground font-bold">AQI vs Traffic Speed Correlation</CardTitle>
+            <CardDescription className="text-foreground/80 font-medium">
               {selectedLocation
                 ? `Real-time data for ${selectedLocation.name || `${selectedLocation.latitude.toFixed(4)}, ${selectedLocation.longitude.toFixed(4)}`}`
                 : "Weekly trend analysis"}
@@ -356,25 +339,25 @@ export default function Analytics() {
           </CardHeader>
           <CardContent>
             {!selectedLocation ? (
-              <Alert className="h-[300px] flex items-center">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
+              <Alert className="h-[300px] flex items-center border-foreground/20 bg-background/80">
+                <AlertCircle className="h-4 w-4 text-foreground" />
+                <AlertDescription className="text-foreground font-medium">
                   <strong>Click on the map</strong> in Dashboard to select a location
                 </AlertDescription>
               </Alert>
             ) : loading ? (
               <div className="h-[300px] flex items-center justify-center">
                 <div className="text-center">
-                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground">Loading correlation data...</p>
+                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2 text-foreground" />
+                  <p className="text-sm text-foreground/70 font-medium">Loading correlation data...</p>
                 </div>
               </div>
             ) : correlationData.length > 0 ? (
               <ChartContainer config={correlationConfig} className="h-[300px]">
                 <LineChart data={correlationData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="day" />
-                  <YAxis />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--foreground)/0.1)" />
+                  <XAxis dataKey="day" stroke="hsl(var(--foreground)/0.8)" />
+                  <YAxis stroke="hsl(var(--foreground)/0.8)" />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line
                     type="monotone"
@@ -396,30 +379,30 @@ export default function Analytics() {
                 </LineChart>
               </ChartContainer>
             ) : (
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+              <div className="h-[300px] flex items-center justify-center text-foreground/70 font-medium">
                 No data available for this location
               </div>
             )}
           </CardContent>
         </Card>
 
-        <Card className="border-2">
+        <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-xl">
           <CardHeader>
-            <CardTitle>Congestion Impact on Fuel Wastage</CardTitle>
-            <CardDescription>Real-time for selected location</CardDescription>
+            <CardTitle className="text-foreground font-bold">Congestion Impact on Fuel Wastage</CardTitle>
+            <CardDescription className="text-foreground/80 font-medium">Real-time for selected location</CardDescription>
           </CardHeader>
           <CardContent>
             {selectedLocation ? (
               loading ? (
                 <div className="h-[300px] flex items-center justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin" />
+                  <Loader2 className="h-8 w-8 animate-spin text-foreground" />
                 </div>
               ) : congestionFuel.length > 0 ? (
                 <ChartContainer config={barConfig} className="h-[300px]">
                   <BarChart data={congestionFuel}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="label" />
-                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--foreground)/0.1)" />
+                    <XAxis dataKey="label" stroke="hsl(var(--foreground)/0.8)" />
+                    <YAxis stroke="hsl(var(--foreground)/0.8)" />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="congestion" fill="var(--color-congestion)" radius={4} />
                     <Bar dataKey="fuel" fill="var(--color-fuel)" radius={4} />
@@ -427,14 +410,14 @@ export default function Analytics() {
                   </BarChart>
                 </ChartContainer>
               ) : (
-                <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                <div className="h-[300px] flex items-center justify-center text-foreground/70 font-medium">
                   No data available for this location
                 </div>
               )
             ) : (
-              <Alert className="h-[300px] flex items-center">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
+              <Alert className="h-[300px] flex items-center border-foreground/20 bg-background/80">
+                <AlertCircle className="h-4 w-4 text-foreground" />
+                <AlertDescription className="text-foreground font-medium">
                   <strong>Click on the map</strong> in Dashboard to select a location
                 </AlertDescription>
               </Alert>
@@ -443,23 +426,27 @@ export default function Analytics() {
         </Card>
       </div>
 
-      <Card className="border-2 mx-auto w-full max-w-6xl">
+      {/* Hourly AQI Trend */}
+      <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-xl">
         <CardHeader>
-          <CardTitle>Hourly AQI Trend</CardTitle>
-          <CardDescription>24-hour pollution pattern analysis for {selectedLocation?.name || 'selected location'}</CardDescription>
+          <CardTitle className="text-foreground font-bold">Hourly AQI Trend</CardTitle>
+          <CardDescription className="text-foreground/80 font-medium">
+            24-hour pollution pattern analysis for {selectedLocation?.name || 'selected location'}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={areaConfig} className="h-[420px]">
             <AreaChart data={hourlyAqi}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--foreground)/0.1)" />
               <XAxis 
                 dataKey="hour" 
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 12, fill: "hsl(var(--foreground)/0.8)" }}
                 tickFormatter={(value) => String(value)}
               />
               <YAxis 
                 domain={[0, 300]}
                 tickCount={7}
+                tick={{ fill: "hsl(var(--foreground)/0.8)" }}
                 tickFormatter={(value) => {
                   if (value === 0) return '0';
                   if (value === 50) return '50';
@@ -476,7 +463,7 @@ export default function Analytics() {
                   if (active && payload && payload.length) {
                     const data = payload[0].payload;
                     return (
-                      <div className="bg-white p-3 border rounded shadow-lg">
+                      <div className="bg-background border border-foreground/20 p-3 rounded-lg shadow-lg text-foreground">
                         <p className="font-semibold">{data.hour}</p>
                         <p>AQI: {data.aqi}</p>
                         <p>PM2.5: {data.pm25 || 'N/A'} µg/m³</p>
@@ -506,15 +493,15 @@ export default function Analytics() {
       </Card>
 
       {/* Traffic and Noise Pollution Scatter Plot */}
-      <Card className="border-2">
+      <Card className="border-2 border-foreground/20 bg-background/80 backdrop-blur-sm transition-all duration-300 hover:shadow-xl">
         <CardHeader>
-          <CardTitle>Traffic Speed vs. Noise Pollution</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-foreground font-bold">Traffic Speed vs. Noise Pollution</CardTitle>
+          <CardDescription className="text-foreground/80 font-medium">
             Relationship between traffic speed and noise levels. Each point represents a 6-hour period.
           </CardDescription>
           {scatterData.length > 0 && (
-            <div className="text-sm text-muted-foreground">
-              Correlation: <span className={`font-medium ${correlation < 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <div className="text-sm text-foreground/80 font-medium">
+              Correlation: <span className={`font-bold ${correlation < 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                 {correlation < 0 ? 'Negative' : 'Positive'} correlation ({Math.abs(correlation).toFixed(2)})
               </span>
               {correlation < 0 ? (
@@ -528,7 +515,7 @@ export default function Analytics() {
         <CardContent>
           {loading ? (
             <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loader2 className="h-8 w-8 animate-spin text-foreground" />
             </div>
           ) : scatterData.length > 0 ? (
             <div className="h-[400px] w-full">
@@ -541,14 +528,15 @@ export default function Analytics() {
                     left: 20,
                   }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--foreground)/0.1)" />
                   <XAxis 
                     type="number" 
                     dataKey="trafficSpeed" 
                     name="Traffic Speed" 
                     unit=" km/h"
                     domain={[0, 60]}
-                    label={{ value: 'Traffic Speed (km/h)', position: 'insideBottomRight', offset: -10 }}
+                    stroke="hsl(var(--foreground)/0.8)"
+                    label={{ value: 'Traffic Speed (km/h)', position: 'insideBottomRight', offset: -10, fill: "hsl(var(--foreground)/0.8)" }}
                   />
                   <YAxis 
                     type="number" 
@@ -556,14 +544,15 @@ export default function Analytics() {
                     name="Noise Level" 
                     unit=" dB"
                     domain={[30, 90]}
-                    label={{ value: 'Noise Level (dB)', angle: -90, position: 'insideLeft' }}
+                    stroke="hsl(var(--foreground)/0.8)"
+                    label={{ value: 'Noise Level (dB)', angle: -90, position: 'insideLeft', fill: "hsl(var(--foreground)/0.8)" }}
                   />
                   <ZAxis range={[50, 400]} dataKey="congestion" name="Congestion" />
                   <RechartsTooltip content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-white p-4 border rounded-lg shadow-lg">
+                        <div className="bg-background border border-foreground/20 p-4 rounded-lg shadow-lg text-foreground">
                           <p className="font-semibold">{data.date}</p>
                           <p>Time: {data.hour}:00 - {data.hour + 6}:00</p>
                           <p>Speed: {data.trafficSpeed} km/h</p>
@@ -596,7 +585,7 @@ export default function Analytics() {
                   </Scatter>
                 </ScatterChart>
               </ResponsiveContainer>
-              <div className="flex flex-wrap justify-center gap-4 mt-2 text-sm text-muted-foreground">
+              <div className="flex flex-wrap justify-center gap-4 mt-2 text-sm text-foreground/80 font-medium">
                 <div className="flex items-center">
                   <div className="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
                   <span>Morning (6-12)</span>
@@ -616,7 +605,7 @@ export default function Analytics() {
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-center h-64 text-muted-foreground">
+            <div className="flex items-center justify-center h-64 text-foreground/70 font-medium">
               <AlertCircle className="h-5 w-5 mr-2" />
               No data available for the selected location
             </div>
@@ -624,9 +613,10 @@ export default function Analytics() {
         </CardContent>
       </Card>
 
-      <Card className="border-2 border-primary/20 bg-gradient-primary/5">
+      {/* Key Insights */}
+      <Card className="border-2 border-primary/30 bg-primary/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-foreground font-bold">
             <TrendingUp className="h-5 w-5 text-primary" />
             Key Insights
           </CardTitle>
@@ -635,14 +625,14 @@ export default function Analytics() {
           {insights.length > 0 ? (
             <div className="space-y-3">
               {insights.map((i, idx) => (
-                <div key={idx} className="p-4 rounded-lg bg-card border-2">
-                  <p className="font-medium">{i.title}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{i.desc}</p>
+                <div key={idx} className="p-4 rounded-lg bg-background/80 border-2 border-foreground/10 transition-all duration-300 hover:border-foreground/20">
+                  <p className="font-bold text-foreground">{i.title}</p>
+                  <p className="text-sm text-foreground/80 mt-1 font-medium">{i.desc}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-sm text-muted-foreground">Insights will appear once data loads for the selected location.</div>
+            <div className="text-sm text-foreground/80 font-medium">Insights will appear once data loads for the selected location.</div>
           )}
         </CardContent>
       </Card>
