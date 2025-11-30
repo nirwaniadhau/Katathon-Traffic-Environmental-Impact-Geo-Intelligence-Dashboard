@@ -26,11 +26,24 @@ const EcoReport = () => {
   const [exporting, setExporting] = useState(false);
 
   const cityNames: any = {
-    hyderabad: "Hyderabad",
-    bangalore: "Bangalore",
-    mumbai: "Mumbai",
-    delhi: "Delhi",
-  };
+  hyderabad: "Hyderabad",
+  bangalore: "Bangalore",
+  mumbai: "Mumbai",
+  delhi: "Delhi",
+
+  chennai: "Chennai",
+  pune: "Pune",
+  kolkata: "Kolkata",
+  ahmedabad: "Ahmedabad",
+  jaipur: "Jaipur",
+  lucknow: "Lucknow",
+  surat: "Surat",
+  nagpur: "Nagpur",
+  visakhapatnam: "Visakhapatnam",
+  bhopal: "Bhopal",
+  patna: "Patna",
+};
+
 
   const durationLabels: any = {
     "7days": "Last 7 days",
@@ -151,16 +164,23 @@ const EcoReport = () => {
           <div className="space-y-2">
             <label className="text-sm font-bold text-foreground block">Select City</label>
             <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="w-48 bg-background/90 border-foreground/20 text-foreground transition-colors duration-200 hover:border-foreground/30">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-background border-foreground/20 text-foreground">
-                <SelectItem value="hyderabad" className="focus:bg-primary/10">Hyderabad</SelectItem>
-                <SelectItem value="bangalore" className="focus:bg-primary/10">Bangalore</SelectItem>
-                <SelectItem value="mumbai" className="focus:bg-primary/10">Mumbai</SelectItem>
-                <SelectItem value="delhi" className="focus:bg-primary/10">Delhi</SelectItem>
-              </SelectContent>
-            </Select>
+  <SelectTrigger className="w-48 bg-background/90 border-foreground/20 text-foreground transition-colors duration-200 hover:border-foreground/30">
+    <SelectValue />
+  </SelectTrigger>
+
+  <SelectContent className="bg-background border-foreground/20 text-foreground">
+    {Object.entries(cityNames).map(([value, label]) => (
+      <SelectItem
+        key={value}
+        value={value}
+        className="focus:bg-primary/10"
+      >
+        {label}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+
           </div>
 
           <div className="space-y-2">
